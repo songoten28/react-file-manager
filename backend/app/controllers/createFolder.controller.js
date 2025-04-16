@@ -1,6 +1,7 @@
 const FileSystem = require("../models/FileSystem.model");
 const fs = require("fs");
 const path = require("path");
+const folderSavePath = require("../config/folder.config");
 
 const createFolder = async (req, res) => {
   // #swagger.summary = 'Creates a new folder.'
@@ -27,7 +28,7 @@ const createFolder = async (req, res) => {
     //
 
     // Physical folder creation using fs
-    const fullFolderPath = path.join(__dirname, "../../public/uploads", folderPath);
+    const fullFolderPath = path.join(folderSavePath, folderPath);
     if (!fs.existsSync(fullFolderPath)) {
       await fs.promises.mkdir(fullFolderPath, { recursive: true });
     } else {

@@ -10,9 +10,9 @@ import { FaRegFileAlt } from "react-icons/fa";
 import "./PreviewFile.action.scss";
 
 const imageExtensions = ["jpg", "jpeg", "png"];
-const videoExtensions = ["mp4", "mov", "avi"];
+const videoExtensions = ["mp4", "mov", "avi", "mkv", "webm"];
 const audioExtensions = ["mp3", "wav", "m4a"];
-const iFrameExtensions = ["txt", "pdf"];
+const iFrameExtensions = ["txt", "pdf", "js", "sh", "bat", "java", "html", "json", "yaml", "yml", "conf", "cfg", "ini"];
 
 const PreviewFileAction = ({ filePreviewPath, filePreviewComponent }) => {
   const [isLoading, setIsLoading] = useState(true);

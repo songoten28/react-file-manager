@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const mongoose = require("mongoose");
 const archiver = require("archiver");
+const folderPath = require("../config/folder.config");
 
 const downloadFile = async (req, res) => {
   // Todo: Update download request query swagger docs.
@@ -32,7 +33,7 @@ const downloadFile = async (req, res) => {
       if (file.isDirectory) {
         files = [files];
       } else {
-        const filePath = path.join(__dirname, "../../public/uploads", file.path);
+        const filePath = path.join(folderPath, file.path);
         if (fs.existsSync(filePath)) {
           res.setHeader("Content-Disposition", `attachment; filename="${file.name}"`);
           return res.sendFile(filePath);
@@ -56,7 +57,7 @@ const downloadFile = async (req, res) => {
     archive.pipe(res);
 
     multipleFiles.forEach((file) => {
-      const filePath = path.join(__dirname, "../../public/uploads", file.path);
+      const filePath = path.join(folderPath, file.path);
       if (fs.existsSync(filePath)) {
         if (file.isDirectory) {
           archive.directory(filePath, file.name);

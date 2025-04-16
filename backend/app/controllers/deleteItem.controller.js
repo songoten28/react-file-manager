@@ -2,6 +2,7 @@ const FileSystem = require("../models/FileSystem.model");
 const fs = require("fs");
 const mongoose = require("mongoose");
 const path = require("path");
+const folderPath = require("../config/folder.config");
 
 const deleteRecursive = async (item) => {
   const children = await FileSystem.find({ parentId: item._id });
@@ -44,7 +45,7 @@ const deleteItem = async (req, res) => {
     }
 
     const deletePromises = items.map(async (item) => {
-      const itemPath = path.join(__dirname, "../../public/uploads", item.path);
+      const itemPath = path.join(folderPath, item.path);
       await fs.promises.rm(itemPath, { recursive: true });
 
       await deleteRecursive(item);

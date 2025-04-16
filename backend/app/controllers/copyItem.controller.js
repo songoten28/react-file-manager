@@ -2,6 +2,7 @@ const FileSystem = require("../models/FileSystem.model");
 const fs = require("fs");
 const mongoose = require("mongoose");
 const path = require("path");
+const folderPath = require("../config/folder.config");
 
 const recursiveCopy = async (sourceItem, destinationFolder) => {
   const copyItem = new FileSystem({
@@ -55,10 +56,10 @@ const copyItem = async (req, res) => {
     }
 
     const copyPromises = sourceItems.map(async (sourceItem) => {
-      const srcFullPath = path.join(__dirname, "../../public/uploads", sourceItem.path);
+      const srcFullPath = path.join(folderPath, sourceItem.path);
 
       if (isRootDestination) {
-        const destFullPath = path.join(__dirname, "../../public/uploads", sourceItem.name);
+        const destFullPath = path.join(folderPath, sourceItem.name);
         await fs.promises.cp(srcFullPath, destFullPath, { recursive: true });
         await recursiveCopy(sourceItem, null); // Destination Folder -> Root Folder
       } else {
@@ -67,8 +68,7 @@ const copyItem = async (req, res) => {
           throw new Error("Invalid destinationId!");
         }
         const destFullPath = path.join(
-          __dirname,
-          "../../public/uploads",
+          folderPath,
           destinationFolder.path,
           sourceItem.name
         );

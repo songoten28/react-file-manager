@@ -6,19 +6,21 @@ const errorHandler = require("./app/middlewares/errorHandler.middleware");
 const dotenv = require("dotenv");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger-output.json");
+const folderPath = require("./app/config/folder.config");
+const startScan = require("./app/config/scanfolder");
 
 dotenv.config();
 
 const app = express();
-
 // Database connection
-connectDB();
+connectDB().then(()=> {
+  startScan(folderPath)
+});
 
 // CORS setup
 app.use(cors({ origin: process.env.CLIENT_URI }));
-
 // Static files serving
-app.use(express.static("public/uploads"));
+app.use(express.static(folderPath));
 
 // Middlewares to parse URL-encoded body & JSON
 app.use(express.urlencoded({ extended: true }));
@@ -32,6 +34,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Error handling middleware
 app.use(errorHandler);
+
+//loading folder
 
 const PORT = process.env.PORT || 3000;
 

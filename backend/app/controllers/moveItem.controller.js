@@ -2,6 +2,7 @@ const FileSystem = require("../models/FileSystem.model");
 const fs = require("fs");
 const mongoose = require("mongoose");
 const path = require("path");
+const folderPath = require("../config/folder.config");
 
 const recursiveMove = async (sourceItem, destinationFolder) => {
   const moveItem = new FileSystem({
@@ -53,10 +54,10 @@ const moveItem = async (req, res) => {
     }
 
     const movePromises = sourceItems.map(async (sourceItem) => {
-      const srcFullPath = path.join(__dirname, "../../public/uploads", sourceItem.path);
+      const srcFullPath = path.join( folderPath, sourceItem.path);
 
       if (isRootDestination) {
-        const destFullPath = path.join(__dirname, "../../public/uploads", sourceItem.name);
+        const destFullPath = path.join(folderPath, sourceItem.name);
         await fs.promises.cp(srcFullPath, destFullPath, { recursive: true });
         await fs.promises.rm(srcFullPath, { recursive: true });
 
@@ -68,8 +69,7 @@ const moveItem = async (req, res) => {
         }
 
         const destFullPath = path.join(
-          __dirname,
-          "../../public/uploads",
+          folderPath,
           destinationFolder.path,
           sourceItem.name
         );
